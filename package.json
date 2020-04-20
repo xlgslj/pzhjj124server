@@ -1,0 +1,37 @@
+{
+  "name": "pzhserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/app.ts",
+    "dev": "supervisor -w build ./build/index.js",
+    "db": "npx typeorm-model-generator -h api.pzhsykj.com -d pzhjj -p 3306 -u admin -x xlgslj -e mysql -o ./src/entity --noConfig true --ce pascal --cp camel",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "koa": "2.0.0",
+    "@types/node": "^13.7.7",
+    "koa-bodyparser": "3.2.0",
+    "koa-router": "7.0.0",
+    "mysql": "^2.18.1",
+    "reflect-metadata": "^0.1.10",
+    "typeorm": "0.2.24",
+    "typescript": "3.3.3333"
+  },
+  "dependencies": {
+    "@types/node": "^8.0.29",
+    "crypto": "^1.0.1",
+    "formidable": "^1.2.2",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
+    "koa-sslify": "^4.0.3",
+    "koa-static": "^5.0.0",
+    "request": "^2.88.2",
+    "typescript": "3.3.3333",
+    "ws": "^7.2.3"
+  }
+}
