@@ -99,6 +99,9 @@ export class Ywsqb {
   @Column("json", { name: "json5", nullable: true })
   json5: object | null;
 
+  @Column("json", { name: "delids", nullable: true })
+  delids: object | null;
+
   @Column("int", { name: "zt", nullable: true })
   zt: number | null;
 

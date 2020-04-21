@@ -11,7 +11,7 @@ let route = new CRobj();
 
 
   //获取业务流水
-  route.get('/app/ywbl/basic/getflows', async (ctx, next) => {
+  route.get('/app/ywbl/ywflow/getflows', async (ctx, next) => {
     try {
         const params = ctx.request.query;
         const ret = new  IChttp.CRet(1);
