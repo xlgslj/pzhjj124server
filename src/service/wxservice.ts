@@ -88,3 +88,12 @@ export async function getgzhnews (params) {
     let token = await get_access_token()
     return await webAsk.postFormJson(`${sysvar.miniapprooturi}/message/wxopen/template/uniform_send?access_token=${token}`, msg);
  }
+
+ /**
+ * 下发订阅消息
+ */
+
+export async function sendsubmsg (msg) {
+    let token = await get_access_token()
+    return await webAsk.postFormJson(`${sysvar.miniapprooturi}/message/subscribe/send?access_token=${token}`, msg);
+ }

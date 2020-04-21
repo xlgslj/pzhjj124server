@@ -5,8 +5,11 @@ import {Ywsqb} from '../../../entity/Ywsqb'
 import * as pub from './_pub'
 import * as sysmanager from '../sysmanage/_pub'
 import * as message from '../messages/_pub'
+import {WxSubscribe, templates, data0} from '../messages/_WxSubscribe'
 import * as unitsrv from '../sysmanage/qxgl/_unit'
 import * as tool from '../../../utils/tools/tool1'
+import * as dateutil from '../../../utils/tools/dateFormat'
+import * as unitywconfigs from './_unitywconfigs'
 let route = new CRobj();
 
 
@@ -23,7 +26,7 @@ let route = new CRobj();
         let {id:ywid, bid, dwid, gid, sqrid, sqr} = ywb
 
         let steps = await pub.getsteps(bid)
-        let tousers = await sysmanager.getusersbyzw(gid, '03')
+        let tousers = await unitywconfigs.getoper(gid, bid, 2)
         //添加任务
         let task = await pub.addtask1({
             bid: bid,
@@ -81,8 +84,26 @@ let route = new CRobj();
             showids: [],
             delids: [],
             zt: '未完成'
-          }        
+          }
         await message.addmsg(msg)
+        // 发送微信消息
+        let msgs = [] 
+        tousers.forEach(d => {
+            let m = new WxSubscribe()
+            m.tousername = d.name
+            m.touser = d.openid
+            m.template_id = templates[0].id
+            m.page = `pages/index/index?from=subscribe`
+            let data = new data0()
+            data.thing1 = {value: `${steps[2].bname} - ${steps[2].name0}`}
+            data.thing2 =  {value: `来自${o.dwmc} ${o.sqr}`}
+            data.thing5 =  {value: "-"}
+            data.thing10 =  {value: "行标题无实际意义请忽略！"}
+            data.date7 = {value: dateutil.formatTime(new Date())}
+            m.data = data
+            msgs.push(m)
+        })
+        if (msgs.length) message.sendsubmsg(msgs)
         ctx.response.body = ret
     } catch (e) {
         const ret = new  IChttp.CRet(0,`${ctx.request.url} 错误: ${e}`);
