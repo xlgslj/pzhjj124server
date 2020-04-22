@@ -7,6 +7,9 @@ import * as sysmanager from '../sysmanage/_pub'
 import * as ywbl from './_pub'
 import { Messages } from "../../../entity/Messages";
 import * as unitywconfigs from './_unitywconfigs'
+import {WxSubscribe, templates, data0} from '../messages/_WxSubscribe'
+import * as dateutil from '../../../utils/tools/dateFormat'
+import * as message from '../messages/_pub'
 
 function st (src, step, next) {
     const steps = src.map(d=> d.step)
@@ -171,6 +174,26 @@ async function shtg11 (params) {
             msg.delids =  []
             msg.zt =  '未完成'       
             await myRunner.manager.save(msg)
+
+            // 发送微信消息
+            let msgs = [] 
+            tousers.forEach(d => {
+                let scene = encodeURIComponent(`${next.url1}?ywid=${params.options.ywid}&tid=${task.id}&bid=${params.options.bid}`)
+                let m = new WxSubscribe()
+                m.tousername = d.name
+                m.touser = d.openid
+                m.template_id = templates[0].id
+                m.page = `pages/index/index?q=${scene}`
+                let data = new data0()
+                data.thing1 = {value: `${next.bname} - ${next[stepnamefield]}`}
+                data.thing2 =  {value: `来自${params.sysuser.dwmc} ${params.sysuser.name}`}
+                data.thing5 =  {value: "-"}
+                data.thing10 =  {value: "行标题无实际意义请忽略！"}
+                data.date7 = {value: dateutil.formatTime(new Date())}
+                m.data = data
+                msgs.push(m)
+            })
+            if (msgs.length) message.sendsubmsg(msgs)
         } else {
             //增加一条办结流水
             let flow = new YwFlow()
@@ -202,7 +225,28 @@ async function shtg11 (params) {
             msg.showids =  []
             msg.delids =  []
             msg.zt =  '完成'
-            await myRunner.manager.save(msg)       
+            await myRunner.manager.save(msg)     
+            
+            // 发送微信消息
+            let msgs = [] 
+            let tousers = [await sysmanager.getuserbyid(r.sqrid)]
+            tousers.forEach(d => {
+                let scene = encodeURIComponent(`${last.url1}?ywid=${params.options.ywid}&tid=${params.options.tid}&bid=${params.options.bid}`)
+                let m = new WxSubscribe()
+                m.tousername = d.name
+                m.touser = d.openid
+                m.template_id = templates[0].id
+                m.page = `pages/index/index?q=${scene}`
+                let data = new data0()
+                data.thing1 = {value: `${last.bname} - ${last[stepnamefield]}`}
+                data.thing2 =  {value: `来自${params.sysuser.dwmc} ${params.sysuser.name}`}
+                data.thing5 =  {value: "-"}
+                data.thing10 =  {value: "行标题无实际意义请忽略！"}
+                data.date7 = {value: dateutil.formatTime(new Date())}
+                m.data = data
+                msgs.push(m)
+            })
+            if (msgs.length) message.sendsubmsg(msgs)
         }
         await myRunner.commitTransaction()
         await myRunner.release()
@@ -341,6 +385,26 @@ async function shtg12 (params) {
                 msg.delids =  []
                 msg.zt =  '未完成'        
                 await myRunner.manager.save(msg)
+                
+                // 发送微信消息
+                let msgs = [] 
+                tousers.forEach(d => {
+                    let scene = encodeURIComponent(`${next.url1}?ywid=${params.options.ywid}&tid=${task.id}&bid=${params.options.bid}`)
+                    let m = new WxSubscribe()
+                    m.tousername = d.name
+                    m.touser = d.openid
+                    m.template_id = templates[0].id
+                    m.page = `pages/index/index?q=${scene}`
+                    let data = new data0()
+                    data.thing1 = {value: `${next.bname} - ${next[stepnamefield]}`}
+                    data.thing2 =  {value: `来自${params.sysuser.dwmc} ${params.sysuser.name}`}
+                    data.thing5 =  {value: "-"}
+                    data.thing10 =  {value: "行标题无实际意义请忽略！"}
+                    data.date7 = {value: dateutil.formatTime(new Date())}
+                    m.data = data
+                    msgs.push(m)
+                })
+                if (msgs.length) message.sendsubmsg(msgs)
             }
 
         } else {
@@ -375,6 +439,27 @@ async function shtg12 (params) {
             msg.delids =  []
             msg.zt =  '完成'
             await myRunner.manager.save(msg)   
+            
+            // 发送微信消息
+            let msgs = [] 
+            let tousers = [await sysmanager.getuserbyid(r.sqrid)]
+            tousers.forEach(d => {
+                let scene = encodeURIComponent(`${last.url1}?ywid=${params.options.ywid}&tid=${params.options.tid}&bid=${params.options.bid}`)
+                let m = new WxSubscribe()
+                m.tousername = d.name
+                m.touser = d.openid
+                m.template_id = templates[0].id
+                m.page = `pages/index/index?q=${scene}`
+                let data = new data0()
+                data.thing1 = {value: `${last.bname} - ${last[stepnamefield]}`}
+                data.thing2 =  {value: `来自${params.sysuser.dwmc} ${params.sysuser.name}`}
+                data.thing5 =  {value: "-"}
+                data.thing10 =  {value: "行标题无实际意义请忽略！"}
+                data.date7 = {value: dateutil.formatTime(new Date())}
+                m.data = data
+                msgs.push(m)
+            })
+            if (msgs.length) message.sendsubmsg(msgs)            
         }
         await myRunner.commitTransaction()
         await myRunner.release()   

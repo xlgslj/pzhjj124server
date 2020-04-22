@@ -86,14 +86,16 @@ let route = new CRobj();
             zt: '未完成'
           }
         await message.addmsg(msg)
+        
         // 发送微信消息
         let msgs = [] 
         tousers.forEach(d => {
+            let scene = encodeURIComponent(`${steps[2].url1}?ywid=${ywid}&tid=${task.id}&bid=${bid}`)
             let m = new WxSubscribe()
             m.tousername = d.name
             m.touser = d.openid
             m.template_id = templates[0].id
-            m.page = `pages/index/index?from=subscribe`
+            m.page = `pages/index/index?q=${scene}`
             let data = new data0()
             data.thing1 = {value: `${steps[2].bname} - ${steps[2].name0}`}
             data.thing2 =  {value: `来自${o.dwmc} ${o.sqr}`}

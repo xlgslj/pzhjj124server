@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Unitywconfigs } from "./Unitywconfigs";
 import { Ywsqb } from "./Ywsqb";
 import { Sysuser } from "./Sysuser";
+import { Worklog } from "./Worklog";
 
 @Entity("unit", { schema: "pzhjj" })
 export class Unit {
@@ -73,4 +74,10 @@ export class Unit {
     sysuser => sysuser.dw
   )
   sysusers: Sysuser[];
+
+  @OneToMany(
+    () => Worklog,
+    worklog => worklog.dw
+  )
+  worklogs: Worklog[];
 }
